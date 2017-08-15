@@ -10,7 +10,7 @@ Stats have 3 conditions:
 **waitng time more than 7 minutes**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 **waiting time less then 7 minutes**     
 ![Statuses](https://pp.userapi.com/c639522/v639522446/32c4d/iP3b6CIp6BY.jpg?raw=true "Statuses")
-
+Information refresh every 10 minutes.\
 Working example: [call-center-score.herokuapp.com](https://call-center-score.herokuapp.com/)
 # How to install
 1. Recomended use venv or virtualenv for better isolation.\
