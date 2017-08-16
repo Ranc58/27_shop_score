@@ -23,7 +23,7 @@ Venv setup example: \
 `$pip3 install -r requirements.txt` (alternatively try add `sudo` before command)
 
 # How to launch
-   - Run server `gunicorn server:app --timeout 300`
+   - Run server `gunicorn server:app`
    - Open on browser `http://127.0.0.1:8000`
 
 # Project Goals
