@@ -12,6 +12,7 @@ Stats have 3 conditions:
 ![Statuses](https://pp.userapi.com/c639522/v639522446/32c4d/iP3b6CIp6BY.jpg?raw=true "Statuses")
 Information refresh every 10 minutes.\
 Site is closed from indexing by search engines.\
+Site maked for displays from 320px to FullHD.\
 Working example: [call-center-score.herokuapp.com](https://call-center-score.herokuapp.com/)
 # How to install
 1. Recomended use venv or virtualenv for better isolation.\
