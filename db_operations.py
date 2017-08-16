@@ -10,9 +10,9 @@ RED_STATUS = 700 * 3
 
 
 def get_table():
-    Base = automap_base()
-    Base.prepare(ENGINE, reflect=True)
-    return Base.classes.orders
+    base = automap_base()
+    base.prepare(ENGINE, reflect=True)
+    return base.classes.orders
 
 
 def get_actual_content(orders):
