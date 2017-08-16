@@ -22,7 +22,7 @@ def get_actual_content(orders):
     return today_orders
 
 
-def get_statuses(today_orders):
+def get_call_center_work_info(today_orders):
     unhandled_orders_count = 0
     status = 'Green'
     for order in today_orders:
@@ -43,5 +43,5 @@ def get_statuses(today_orders):
 def get_info_for_flask():
     orders = get_table()
     today_orders = get_actual_content(orders)
-    order_statuses = get_statuses(today_orders)
+    order_statuses = get_call_center_work_info(today_orders)
     return order_statuses
