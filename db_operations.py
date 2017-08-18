@@ -1,12 +1,12 @@
 from datetime import date
-from sqlalchemy import create_engine, Date, cast
+from sqlalchemy import create_engine, Date, cast, func
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 
 ENGINE = create_engine("postgresql://"
                        "score:Rysherat2@shopscore.devman.org/shop")
-YELLOW_STATUS = 700
-RED_STATUS = 700 * 3
+YELLOW_STATUS = 420
+RED_STATUS = 1800
 
 
 def get_table():
@@ -15,33 +15,34 @@ def get_table():
     return base.classes.orders
 
 
-def get_actual_content(orders):
+def get_orders_handling_info(orders):
     session = Session(ENGINE)
-    table = session.query(orders.created, orders.confirmed)
-    today_orders = table.filter(cast(orders.created, Date) == date.today())
-    return today_orders
-
-
-def get_statuses(today_orders):
-    unhandled_orders_count = 0
-    status = 'Green'
-    for order in today_orders:
-        if order.confirmed is None:
-            unhandled_orders_count += 1
-            continue
-        time_diff = order.confirmed - order.created
-        if time_diff.seconds > RED_STATUS:
-            status = 'Red'
-        elif time_diff.seconds > YELLOW_STATUS and status is not 'Red':
-            status = 'Yellow'
-    handled_orders_count = len(today_orders.all()) - unhandled_orders_count
+    time_diff = orders.confirmed - orders.created
+    day_confirmed_filter = cast(orders.confirmed, Date) == date.today()
+    db_query = session.query(time_diff)
+    unhandled_orders_count = db_query.filter(orders.confirmed is None).count()
+    handled_orders_count = db_query.filter(day_confirmed_filter).count()
+    max_handled_time = session.query(func.max(time_diff))
+    max_daily_handled_time = max_handled_time.filter(day_confirmed_filter)
     return {'unhandled_orders_count': unhandled_orders_count,
-            'status': status,
+            'max_daily_handled_time': max_daily_handled_time.scalar(),
             'handled_orders_count': handled_orders_count}
+
+
+def get_orders_handling_status(handling_info):
+    handling_status = 'Green'
+    handling_time = handling_info['max_daily_handled_time'].seconds
+    if handling_time > RED_STATUS:
+        handling_status = 'Red'
+    elif handling_time > YELLOW_STATUS:
+        handling_status = 'Yellow'
+    return handling_status
 
 
 def get_info_for_flask():
     orders = get_table()
-    today_orders = get_actual_content(orders)
-    order_statuses = get_statuses(today_orders)
-    return order_statuses
+    handling_info = get_orders_handling_info(orders)
+    handling_status = get_orders_handling_status(handling_info)
+    return {'unhandled_orders_count': handling_info['unhandled_orders_count'],
+            'status': handling_status,
+            'handled_orders_count': handling_info['handled_orders_count']}
