@@ -1,10 +1,16 @@
 from datetime import date
 from sqlalchemy import create_engine, Date, cast, func
 from sqlalchemy.ext.automap import automap_base
+from sqlalchemy.engine.url import URL
 from sqlalchemy.orm import Session
 
-ENGINE = create_engine("postgresql://"
-                       "score:Rysherat2@shopscore.devman.org/shop")
+
+postgres_db = {'drivername': 'postgresql',
+               'username': 'score',
+               'password': 'Rysherat2',
+               'host': 'shopscore.devman.org',
+               'database': 'shop'}
+ENGINE = create_engine(URL(**postgres_db))
 YELLOW_STATUS = 420
 RED_STATUS = 1800
 
