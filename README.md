@@ -25,6 +25,12 @@ Venv setup example: \
 # How to launch
    - Run server `gunicorn server:app`
    - Open on browser `http://127.0.0.1:8000`
+   
+   How to run from Docker:
+   ```
+   docker-compose build
+   docker-composer up
+   ```
 # Project Goals
 
 The code is written for educational purposes. Training course for web-developers - [DEVMAN.org](https://devman.org)
